@@ -6,4 +6,4 @@
 # Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
-D:\PythonProjects\todo_list\todo_list\settings.py
+todo_list/todo_list/settings.py
