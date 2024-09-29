@@ -1,0 +1,24 @@
+{% extends 'base/index.html' %}
+{% block content %}
+
+    <form class="form" method="POST">
+        {% csrf_token %}
+        <p class="form-title">Sign up a new account</p>
+
+        <label for="{{ form.username.id_for_label }}">Username:</label>
+        {{ form.username }}
+        <label for="{{ form.password1.id_for_label }}">Password:</label>
+        {{ form.password1 }}
+        <label for="{{ form.password2.id_for_label }}">Confirm password:</label>
+        {{ form.password2 }}
+
+        <button type="submit" class="submit">
+            Sign up
+        </button>
+
+        <p class="signup-link">
+            Have account?
+            <a href="{% url 'signin' %}">Sign in</a>
+        </p>
+    </form>
+{% endblock content %}

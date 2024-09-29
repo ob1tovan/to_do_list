@@ -1,0 +1,21 @@
+{% extends 'base/index.html' %}
+{% block content %}
+    
+    <div class="container">
+        <div class="header-bar">
+            <a href="{% url 'tasks' %}">&#8592; Back</a>
+        </div>
+
+        <div class="form-body">
+            <form method="post" action="">
+                {% csrf_token %}
+                <p>{{ form.title }}</p>
+                <p>{{ form.description }}</p>
+                <p>Complete: {{ form.complete }}</p>
+                <p>Date: {{ form.due_date }}</p>
+                <input class="button" type="submit" value="Submit">
+            </form>
+        </div>
+    </div>
+
+{% endblock content %}

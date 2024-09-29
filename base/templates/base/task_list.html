@@ -1,0 +1,96 @@
+{% extends 'base/index.html' %}
+{% block content %}
+
+    <div class="container">
+        <div class="header-bar">
+            <div>
+                <h1>Hello {{ request.user|title }}</h1>
+                <h3 style="margin:0">You have {{ count }} incomplete task{{ count|pluralize }}</h3>
+            </div>
+
+            {% if request.user.is_authenticated %}
+            <form action="{% url 'logout' %}" method="post" style="display:inline;">
+            {% csrf_token %}
+            <button class="btn">
+                <div class="sign">
+                    <svg viewBox="0 0 512 512">
+                        <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9
+                        406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7
+                        14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0
+                        256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0
+                        75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z">
+                        </path>
+                    </svg>
+                </div>
+                <div class="text-btn">Logout</div>
+            </button>
+            </form>
+            {% endif %}
+        </div>
+
+        <div id="search-add-wrapper">
+            <form method="get">
+                <input type="text" name="search-area" value="{{ search_input }}">
+                <input class="button" type="submit" value="Search">
+            </form>
+            <a id="add-link" href="{% url 'task-create' %}">&#x2b;</a>
+        </div>
+
+        <form class="box-style" method="get">
+        <select name="sort-by">
+            <option value="due_date" {% if sort_input == "due_date" %}selected{% endif %}>Due Date</option>
+            <option value="create" {% if sort_input == "create" %}selected{% endif %}>Creation Date</option>
+        </select>
+        <input class="button" type="submit" value="Sort">
+        </form>
+
+    
+{#        <form method="get">#}
+{#    <div class="radio-input">#}
+{#        <label>#}
+{#            <input value="due_date" name="sort-by" id="value-1" type="radio" #}
+{#            {% if sort_input == 'due_date' %} checked {% endif %} />#}
+{#            <span>Due Date</span>#}
+{#        </label>#}
+{#        <label>#}
+{#            <input value="create" name="sort-by" id="value-2" type="radio" #}
+{#            {% if sort_input == 'create' %} checked {% endif %} />#}
+{#            <span>Creation Date</span>#}
+{#        </label>#}
+{#        <span class="selection"></span>#}
+{#    </div>#}
+{#</form>#}
+{##}
+{#<script>#}
+{#    document.querySelectorAll('.radio-input input').forEach((input) => {#}
+{#        input.addEventListener('change', () => {#}
+{#            input.closest('form').submit();#}
+{#        });#}
+{#    });#}
+{#</script>#}
+    
+
+        <div class="task-items-wrapper">
+            {% for task in object_list %}
+            <div class="task-wrapper">
+            {% if task.complete %}
+                <div class="task-title">
+                    <div class="task-complete-icon"></div>
+                    <i><s><a href="{% url 'task-update' task.id %}">{{ task }}</a></s></i>
+                    <span class="due-date">Due: {{ task.due_date|date:"d/m/Y" }}</span>
+                </div>
+                <a class="delete-link" href="{% url 'task-delete' task.id %}">&#215;</a>
+                {% else %}
+                <div class="task-title">
+                    <div class="task-incomplete-icon"></div>
+                    <a href="{% url 'task-update' task.id %}">{{ task }}</a>
+                    <span class="due-date">Due to: {{ task.due_date|date:"d/m/Y" }}</span>
+                </div>
+                <a class="delete-link" href="{% url 'task-delete' task.id %}">&#215;</a>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock content %}
